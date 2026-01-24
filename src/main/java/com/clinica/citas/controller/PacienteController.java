@@ -25,6 +25,6 @@ public class PacienteController {
     public PacienteOutputDTO registrarPaciente(@RequestBody PacienteInputDTO pacienteInput){
         PersonaDTO persona = pacienteService.obtenerPersonaDNI(pacienteInput.dni());
         Double imc = pacienteService.calcularImc(pacienteInput.peso(), pacienteInput.talla());
-        return new PacienteOutputDTO(persona, Math.round(imc * 100.0) / 100.0);
+        return new PacienteOutputDTO(persona, pacienteInput.peso(), pacienteInput.talla(), Math.round(imc * 100.0) / 100.0, pacienteInput.idEspecialidad());
     }
 }
