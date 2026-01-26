@@ -1,7 +1,7 @@
 package com.clinica.citas.model.dto;
 
 public record EstadoCivilDTO(
-        Long idEstado,
+        Long idEstadoCivil,
         String nombre
 ) {
 }
