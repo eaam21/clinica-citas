@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name="persona", url="localhost:8080")
+//@FeignClient(name="persona", url="localhost:8080")
+@FeignClient(name="personas")
 public interface IPersonaFeignClient {
     @GetMapping("/personas")
     List<PersonaDTO> listarPersonas();
