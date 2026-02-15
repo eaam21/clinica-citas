@@ -19,18 +19,28 @@ public class PacienteController {
     private final PacienteService pacienteService;
 
     @GetMapping("/listar")
-    public List<PersonaDTO> listarPersonas(){
-        return pacienteService.listarPersonas();
+    public List<PersonaDTO> listarPersonas(@RequestHeader("Authorization") String authorization){
+        return pacienteService.listarPersonas(authorization);
     }
 
     @PostMapping("/registrar")
-    public PacienteOutputDTO registrarPaciente(@RequestBody PacienteInputDTO pacienteInput){
-        PersonaDTO persona = pacienteService.obtenerPersonaDNI(pacienteInput.dni());
+    public PacienteOutputDTO registrarPaciente(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody PacienteInputDTO pacienteInput
+    ){
+        PersonaDTO persona = pacienteService.obtenerPersonaDNI(authorization, pacienteInput.dni());
         Double imc = pacienteService.calcularImc(pacienteInput.peso(), pacienteInput.talla());
 
-        PacienteOutputDTO pacienteOutputDTO = new PacienteOutputDTO(persona, pacienteInput.peso(), pacienteInput.talla(), Math.round(imc * 100.0) / 100.0, pacienteInput.idEspecialidad());
+        PacienteOutputDTO pacienteOutputDTO = new PacienteOutputDTO(
+                persona,
+                pacienteInput.peso(),
+                pacienteInput.talla(),
+                Math.round(imc * 100.0) / 100.0,
+                pacienteInput.idEspecialidad()
+        );
+
         pacienteService.publicarMensaje(pacienteOutputDTO);
-        log.info("La cita del paciente fue registrada con exito!: "+pacienteOutputDTO);
+        log.info("La cita del paciente fue registrada con exito!: " + pacienteOutputDTO);
         return pacienteOutputDTO;
     }
 }

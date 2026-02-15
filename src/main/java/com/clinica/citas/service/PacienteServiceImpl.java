@@ -12,14 +12,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PacienteServiceImpl implements  PacienteService {
+public class PacienteServiceImpl implements PacienteService {
 
     private final IPersonaFeignClient personaService;
     private final KafkaTemplate<String, PacienteOutputDTO> kafkaTemplate;
 
     @Override
-    public List<PersonaDTO> listarPersonas() {
-        return personaService.listarPersonas();
+    public List<PersonaDTO> listarPersonas(String authorization) {
+        return personaService.listarPersonas(authorization);
     }
 
     @Override
@@ -28,8 +28,8 @@ public class PacienteServiceImpl implements  PacienteService {
     }
 
     @Override
-    public PersonaDTO obtenerPersonaDNI(String dni) {
-        return personaService.personaPorDni(dni);
+    public PersonaDTO obtenerPersonaDNI(String authorization, String dni) {
+        return personaService.personaPorDni(authorization, dni);
     }
 
     @Override
@@ -37,3 +37,4 @@ public class PacienteServiceImpl implements  PacienteService {
         kafkaTemplate.send(Constantes.TOPICO, pacienteOutputDTO);
     }
 }
+
